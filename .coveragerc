@@ -34,6 +34,7 @@ omit = src/ngamsPlugIns/ngamsPlugIns/alma/*
        src/ngamsPlugIns/ngamsPlugIns/mwa/*
        src/ngamsPlugIns/ngamsPlugIns/eso/*
        */setup.py
+relative_files = true
 
 # When coveralls combines the information from different runs
 # it ends up reporting multiple copies of the same source files
