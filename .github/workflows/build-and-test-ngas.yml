@@ -6,7 +6,6 @@ jobs:
     strategy:
       matrix:
         include:
-        - python: 2.7
         - python: 3.5
         - python: 3.6
         - python: 3.7
@@ -23,6 +22,11 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python }}
+
+    - name: Create and activate virtual environment
+      run: |
+        python -mvenv ~/ngas
+        echo 'source ~/ngas/bin/activate' > ~/.profile
 
     - name: Install system dependencies
       run: sudo apt update && sudo apt install libdb-dev
