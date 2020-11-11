@@ -36,6 +36,7 @@ fail() {
 	exit 1
 }
 
+if [ "$SKIP_BBCP" =! 1 ]; then
 
 # Make ourselves resolvable
 # NGAS itself doesn't need this because it always internally resolves
@@ -55,11 +56,12 @@ fi
 if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
 	sudo systemsetup -setremotelogin on
 else
-	sudo start ssh
+	sudo start ssh || sudo systemctl start ssh || echo "couldn't start ssh" 1>&2
 fi
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -q || fail "Failed to create RSA key"
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys || fail "Failed to add public key to authorized keys"
 ssh-keyscan localhost >> ~/.ssh/known_hosts || fail "Failed to import localhost's keys"
+chmod 600 ~/.ssh/authorized_keys ~/.ssh/known_hosts
 cat << EOF >> ~/.ssh/config
 Host *
      IdentityFile ~/.ssh/id_rsa
@@ -88,6 +90,8 @@ else
 	echo "Failed to clone bbcp, testing proceeding without bbcp" 1>&2
 fi
 cd ${TRAVIS_BUILD_DIR}
+
+fi
 
 # In OSX we need to brew install some things
 #
