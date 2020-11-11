@@ -28,7 +28,7 @@ jobs:
       run: sudo apt update && sudo apt install libdb-dev
 
     - name: Install NGAS
-      run: SKIP_BBCP=1 TRAVIS_BUILD_DIR=$PWD .travis/run_build.sh
+      run: VIRTUAL_ENV=/opt/hostedtoolcache/Python/3.7.9/x64/ SKIP_BBCP=1 TRAVIS_BUILD_DIR=$PWD .travis/run_build.sh
 
     - name: Run NGAS tests
       run: .travis/run_tests.sh
