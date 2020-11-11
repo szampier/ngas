@@ -22,7 +22,7 @@ jobs:
         python-version: ${{ matrix.python }}
 
     - name: Install core python development packages
-      run: pip install -v -U pip setuptools wheel
+      run: pip install -U pip setuptools wheel
 
     - name: Install system dependencies
       run: sudo apt update && sudo apt install libdb-dev
