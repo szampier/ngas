@@ -24,6 +24,9 @@ jobs:
     - name: Install core python development packages
       run: pip install -v -U pip setuptools wheel
 
+    - name: Show environment
+      run: env
+
     - name: Install system dependencies
       run: sudo apt update && sudo apt install libdb-dev
 
@@ -34,4 +37,15 @@ jobs:
       run: .travis/run_tests.sh
 
     - name: Upload coverage results
-      run: .travis/after_success.sh
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel: true
+
+  upload-coverage:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update coverage
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel-finished: true
