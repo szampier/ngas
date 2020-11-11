@@ -21,10 +21,8 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
 
-    - name: Create and activate virtual environment
-      run: |
-        python -mvenv ~/ngas
-        echo 'source ~/ngas/bin/activate' > ~/.bashrc
+    - name: Install core python development packages
+      run: pip install -v -U pip setuptools wheel
 
     - name: Install system dependencies
       run: sudo apt update && sudo apt install libdb-dev
