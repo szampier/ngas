@@ -36,7 +36,7 @@ fail() {
 	exit 1
 }
 
-if [ -n "${SKIP_BBCP}" ]; then
+if [ -z "${SKIP_BBCP}" ]; then
 
 # Make ourselves resolvable
 # NGAS itself doesn't need this because it always internally resolves
