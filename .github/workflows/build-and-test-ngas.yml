@@ -6,6 +6,9 @@ jobs:
     strategy:
       matrix:
         include:
+        - python: 2.7
+        - python: 3.5
+        - python: 3.6
         - python: 3.7
 
     runs-on: ubuntu-18.04
@@ -24,14 +27,11 @@ jobs:
     - name: Install core python development packages
       run: pip install -v -U pip setuptools wheel
 
-    - name: Show environment
-      run: env
-
     - name: Install system dependencies
       run: sudo apt update && sudo apt install libdb-dev
 
     - name: Install NGAS
-      run: VIRTUAL_ENV=/opt/hostedtoolcache/Python/3.7.9/x64/ SKIP_BBCP=1 TRAVIS_BUILD_DIR=$PWD .travis/run_build.sh
+      run: VIRTUAL_ENV=${pythonLocation} SKIP_BBCP=1 TRAVIS_BUILD_DIR=$PWD .travis/run_build.sh
 
     - name: Run NGAS tests
       run: .travis/run_tests.sh
