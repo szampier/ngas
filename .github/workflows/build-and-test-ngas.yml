@@ -31,7 +31,7 @@ jobs:
       run: VIRTUAL_ENV=${pythonLocation} SKIP_BBCP=1 TRAVIS_BUILD_DIR=$PWD .travis/run_build.sh
 
     - name: Run NGAS tests
-      run: .travis/run_tests.sh
+      run: TESTS=test/test_mime_multipart.py .travis/run_tests.sh
 
     - name: Upload coverage results
       uses: AndreMiras/coveralls-python-action@develop
