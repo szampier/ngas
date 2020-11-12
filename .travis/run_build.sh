@@ -159,7 +159,7 @@ if [[ "$DB" == "mysql" ]]; then
 
 	# Create ngas database, we keep using the "travis" user
 	# (who might have already all priviledges over its newly created database)
-	mysql_cmd="mysql -uroot -e"
+	mysql_cmd="mysql -h 127.0.0.1 -uroot -e"
 	$mysql_cmd "CREATE USER 'ngas'@'%' IDENTIFIED BY 'ngas';" || fail "$EUSER"
 	$mysql_cmd "CREATE DATABASE ngas;" || fail "$EDB"
 	$mysql_cmd "GRANT ALL ON ngas.* TO 'ngas'@'%';" || fail "$EPERM"
@@ -175,7 +175,7 @@ if [[ "$DB" == "mysql" ]]; then
 elif [[ "$DB" == "postgresql" ]]; then
 
 	# Create database and user
-	psql_cmd="psql -U postgres -c"
+	psql_cmd="psql -U postgres -h localhost -c"
 	$psql_cmd "CREATE USER ngas WITH PASSWORD 'ngas';" || fail "$EUSER"
 	$psql_cmd 'CREATE DATABASE ngas;' || fail "$EDB"
 	$psql_cmd 'GRANT ALL PRIVILEGES ON DATABASE ngas TO ngas;' || fail "$EPERM"
