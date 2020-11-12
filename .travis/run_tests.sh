@@ -62,11 +62,12 @@ coverage combine || fail "Failed to combine coverage information"
 
 # These are the user/dbname/passwd that we created on run_build
 # sqlite3 is the default so it needs no special attention
+DB_HOST=${DB_HOST:-127.0.0.1}
 NGAS_TESTDB=
 if [[ "$DB" == "mysql" ]]; then
-	NGAS_TESTDB='<Db Id="blah" Snapshot="0" Interface="MySQLdb" host="127.0.0.1" db="ngas" user="ngas" passwd="ngas"/>'
+	NGAS_TESTDB='<Db Id="blah" Snapshot="0" Interface="MySQLdb" host="${DB_HOST}" db="ngas" user="ngas" passwd="ngas"/>'
 elif [[ "$DB" == "postgresql" ]]; then
-	NGAS_TESTDB='<Db Id="blah" Snapshot="0" Interface="psycopg2" host="127.0.0.1" dbname="ngas" user="ngas" password="ngas"/>'
+	NGAS_TESTDB='<Db Id="blah" Snapshot="0" Interface="psycopg2" host="${DB_HOST}" dbname="ngas" user="ngas" password="ngas"/>'
 fi
 export NGAS_TESTDB
 

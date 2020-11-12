@@ -155,17 +155,18 @@ PIP_PACKAGES="bsddb3 python-daemon astropy netifaces"
 
 # We need to prepare the database for what's to come later on, and to install
 # the corresponding python module so NGAS can talk to the database
+DB_HOST=${DB_HOST:-127.0.0.1}
 if [[ "$DB" == "mysql" ]]; then
 
 	# Create ngas database, we keep using the "travis" user
 	# (who might have already all priviledges over its newly created database)
-	mysql_cmd="mysql -h 127.0.0.1 -uroot -e"
+	mysql_cmd="mysql -h ${DB_HOST} -uroot -e"
 	$mysql_cmd "CREATE USER 'ngas'@'%' IDENTIFIED BY 'ngas';" || fail "$EUSER"
 	$mysql_cmd "CREATE DATABASE ngas;" || fail "$EDB"
 	$mysql_cmd "GRANT ALL ON ngas.* TO 'ngas'@'%';" || fail "$EPERM"
 
 	# Create ngas database schema
-	mysql -ungas -D ngas -h 127.0.0.1 -pngas \
+	mysql -ungas -D ngas -h ${DB_HOST} -pngas \
 	    < src/ngamsCore/ngamsSql/ngamsCreateTables-mySQL.sql \
 		 || fail "$ECREAT"
 
@@ -175,13 +176,13 @@ if [[ "$DB" == "mysql" ]]; then
 elif [[ "$DB" == "postgresql" ]]; then
 
 	# Create database and user
-	psql_cmd="psql -U postgres -h localhost -c"
+	psql_cmd="psql -U postgres -h ${DB_HOST} -c"
 	$psql_cmd "CREATE USER ngas WITH PASSWORD 'ngas';" || fail "$EUSER"
 	$psql_cmd 'CREATE DATABASE ngas;' || fail "$EDB"
 	$psql_cmd 'GRANT ALL PRIVILEGES ON DATABASE ngas TO ngas;' || fail "$EPERM"
 
 	# Create ngas database schema
-	PGPASSWORD=ngas psql -U ngas -d ngas -h localhost \
+	PGPASSWORD=ngas psql -U ngas -d ngas -h ${DB_HOST} \
 	    < src/ngamsCore/ngamsSql/ngamsCreateTables-PostgreSQL.sql \
 		 || fail "$ECREAT"
 
