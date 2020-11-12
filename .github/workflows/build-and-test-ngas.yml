@@ -50,7 +50,7 @@ jobs:
     steps:
     - name: Finish coveralls
       run: |
-        pip3 install coverage==5.0.1
+        pip3 install coverage<5
         pip3 install -U coveralls
         coveralls --finish
       env:

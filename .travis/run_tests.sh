@@ -43,7 +43,7 @@ fail() {
 # version of pytest, and pip now complains about this.
 #
 # pytest-cov is pinned to work against pytest<3.7.
-pip install psutil 'coverage==5.0.1' 'pytest<3.7' 'pytest-cov<2.10' coveralls trustme || fail "Failed to install unit test dependencies"
+pip install psutil 'coverage<5' 'pytest<3.7' 'pytest-cov<2.10' coveralls trustme || fail "Failed to install unit test dependencies"
 
 # Try to simply import the plugin modules
 # This increases our coverage by a not-too-small amount
