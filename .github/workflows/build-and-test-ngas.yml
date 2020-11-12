@@ -7,6 +7,16 @@ jobs:
       matrix:
         include:
         - python: 2.7
+        - python: 2.7
+          db: mysql
+          services:
+            mysql:
+              image: mysql
+        - python: 2.7
+          db: postgresql
+          services:
+            postgresql:
+              image: postgres
         - python: 3.5
         - python: 3.6
         - python: 3.7
@@ -28,13 +38,17 @@ jobs:
       run: pip install -U pip setuptools wheel
 
     - name: Install system dependencies
-      run: sudo apt update && sudo apt install libdb-dev
+      run: sudo apt update && sudo apt install libdb-dev libmysqlclient-dev libpq-dev
 
     - name: Install NGAS
       run: VIRTUAL_ENV=${pythonLocation} SKIP_BBCP=1 TRAVIS_BUILD_DIR=$PWD .travis/run_build.sh
+      env:
+        DB: ${{ matrix.db }}
 
     - name: Run NGAS tests
-      run: TESTS=${{ matrix.tests }} .travis/run_tests.sh
+      run: TESTS=test/commands/test_containers.py .travis/run_tests.sh
+      env:
+        DB: ${{ matrix.db }}
 
     - name: Setup python 3 for coverage data upload
       if: matrix.python == 2.7
