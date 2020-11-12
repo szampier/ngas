@@ -6,11 +6,10 @@ jobs:
     strategy:
       matrix:
         include:
+        - python: 2.7
         - python: 3.5
         - python: 3.6
-          tests: test/test_mime_multipart.py
         - python: 3.7
-          tests: test/test_partner_sites.py
 
     runs-on: ubuntu-18.04
 
@@ -37,16 +36,21 @@ jobs:
     - name: Run NGAS tests
       run: TESTS=${{ matrix.tests }} .travis/run_tests.sh
 
-    - name: Upload coverage results
-      uses: AndreMiras/coveralls-python-action@develop
-      with:
-        parallel: true
+    - name: Upload coverage data
+      run: coveralls
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COVERALLS_FLAG_NAME: ${{ matrix.python }}
+        COVERALLS_PARALLEL: true
 
-  upload-coverage:
+  finish-coveralls:
     needs: build-and-test
     runs-on: ubuntu-latest
+    container: python:3-slim
     steps:
-    - name: Update coverage
-      uses: AndreMiras/coveralls-python-action@develop
-      with:
-        parallel-finished: true
+    - name: Finish coveralls
+      run: |
+        pip3 install -U coveralls
+        coveralls --finish
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
