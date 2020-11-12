@@ -36,8 +36,14 @@ jobs:
     - name: Run NGAS tests
       run: TESTS=${{ matrix.tests }} .travis/run_tests.sh
 
+    - name: Setup python 3 for coverage data upload
+      if: matrix.python == 2.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
     - name: Upload coverage data
-      run: coveralls
+      run: pip install -U coveralls && coveralls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COVERALLS_FLAG_NAME: ${{ matrix.python }}
