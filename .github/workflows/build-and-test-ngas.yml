@@ -43,7 +43,7 @@ jobs:
         python-version: 3.7
 
     - name: Upload coverage data
-      run: pip install -U coveralls && coveralls
+      run: pip install -U coveralls "coverage<5" && coveralls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COVERALLS_FLAG_NAME: ${{ matrix.python }}
