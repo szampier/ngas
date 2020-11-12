@@ -3,20 +3,19 @@ on: [push, pull_request]
 
 jobs:
   build-and-test:
+    services:
+      mysql:
+        image: mysql
+      postgresql:
+        image: postgres
     strategy:
       matrix:
         include:
         - python: 2.7
         - python: 2.7
           db: mysql
-          services:
-            mysql:
-              image: mysql
         - python: 2.7
           db: postgresql
-          services:
-            postgresql:
-              image: postgres
         - python: 3.5
         - python: 3.6
         - python: 3.7
