@@ -6,8 +6,12 @@ jobs:
     services:
       mysql:
         image: mysql
+        ports:
+        - 3306:3306
       postgresql:
         image: postgres
+        ports:
+        - 5432:5432
     strategy:
       matrix:
         include:
@@ -43,13 +47,11 @@ jobs:
       run: VIRTUAL_ENV=${pythonLocation} SKIP_BBCP=1 TRAVIS_BUILD_DIR=$PWD .travis/run_build.sh
       env:
         DB: ${{ matrix.db }}
-        DB_HOST: ${{ matrix.db }}
 
     - name: Run NGAS tests
       run: TESTS=test/commands/test_containers.py .travis/run_tests.sh
       env:
         DB: ${{ matrix.db }}
-        DB_HOST: ${{ matrix.db }}
 
     - name: Setup python 3 for coverage data upload
       if: matrix.python == 2.7
