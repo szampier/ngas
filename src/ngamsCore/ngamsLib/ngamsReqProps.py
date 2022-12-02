@@ -260,6 +260,10 @@ class ngamsReqProps:
             return None
 
 
+    def setHttpHdr(self, httpHdr, value):
+        self.__httpHdrDic[httpHdr.lower()] = value
+
+
     def getHttpHdrs(self):
         """
         Return list with HTTP header keys (all lower cased).

@@ -108,9 +108,8 @@ def receiveData(srvObj,
     storageSetId = trgDiskInfoObj.getStorageSetId()
     stagingFilename = ngamsHighLevelLib.\
                       genStagingFilename(srvObj.getCfg(), reqPropsObj,
-                                         srvObj.getDiskDic(), storageSetId,
-                                         reqPropsObj.getFileUri(),
-                                         genTmpFiles = 0)
+                                         trgDiskInfoObj,
+                                         reqPropsObj.getFileUri())
     reqPropsObj.setStagingFilename(stagingFilename)
 
     # If it is an Rearchive Pull Request, open the URL.
@@ -138,7 +137,7 @@ def receiveData(srvObj,
         skip_crc = True
         if stored_checksum and crc_variant:
             reqPropsObj.addHttpPar('crc_variant', crc_variant)
-            reqPropsObj.__httpHdrDic[NGAMS_HTTP_HDR_CHECKSUM] = stored_checksum
+            reqPropsObj.setHttpHdr(NGAMS_HTTP_HDR_CHECKSUM, stored_checksum)
             skip_crc = False
 
         ngamsArchiveUtils.archive_contents_from_request(stagingFilename, srvObj.getCfg(),
